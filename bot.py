@@ -1,12 +1,11 @@
 import os
-import asyncio
-from flask import Flask, request
+from fastapi import FastAPI, Request
 from telegram import Update
 from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
 
 BOT_TOKEN = os.environ.get("BOT_TOKEN")
 
-app = Flask(__name__)
+app = FastAPI()
 
 application = ApplicationBuilder().token(BOT_TOKEN).build()
 
@@ -16,20 +15,24 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 application.add_handler(CommandHandler("start", start))
 
-# ---- Initialize Telegram App Properly ----
-async def init_app():
+
+# ---- Startup Event ----
+@app.on_event("startup")
+async def startup():
     await application.initialize()
     await application.start()
 
-asyncio.get_event_loop().run_until_complete(init_app())
 
-# ---- Routes ----
-@app.route("/")
-def home():
-    return "Bot is live"
+# ---- Health Check ----
+@app.get("/")
+async def root():
+    return {"status": "Bot is live"}
 
-@app.route(f"/{BOT_TOKEN}", methods=["POST"])
-async def webhook():
-    update = Update.de_json(request.get_json(force=True), application.bot)
+
+# ---- Webhook Route ----
+@app.post(f"/{BOT_TOKEN}")
+async def telegram_webhook(request: Request):
+    data = await request.json()
+    update = Update.de_json(data, application.bot)
     await application.process_update(update)
-    return "ok"
+    return {"ok": True}
