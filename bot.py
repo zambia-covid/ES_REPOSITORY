@@ -54,9 +54,11 @@ app = FastAPI()
 async def root():
     return {"message": "Bot is live!"}
 
-@app.post(f"/{BOT_TOKEN}")
-async def telegram_webhook(request: Request):
-    """Webhook endpoint to receive Telegram updates."""
+@app.post("/{full_path:path}")
+async def telegram_webhook(full_path: str, request: Request):
+    if full_path != BOT_TOKEN:
+        return {"error": "Invalid webhook path"}
+
     try:
         data = await request.json()
         update = Update.de_json(data, application.bot)
