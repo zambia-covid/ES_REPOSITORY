@@ -6,7 +6,7 @@ from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, fil
 # ==========================
 # CONFIG
 # ==========================
-BOT_TOKEN = "YOUR_BOT_TOKEN_HERE"  # replace with your bot token
+BOT_TOKEN = 8311987283:AAH3K21-_LSjycmKMm6UbmBoampg1AvOHWo  # replace with your bot token
 PORT = 8000  # default FastAPI port, Render overrides with $PORT
 
 # ==========================
