@@ -44,20 +44,17 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_text = update.message.text.lower()
 
     for item in STATEMENTS:
+        # Search in keywords
+        keyword_match = any(keyword.lower() in user_text for keyword in item.get("keywords", []))
+        # Search in question text
+        question_match = item.get("question") and item["question"].lower() in user_text
 
-        # Tag matching
-        if any(tag.lower() in user_text for tag in item.get("tags", [])):
-            await update.message.reply_text(item["answer"])
-            return
-
-        # Partial keyword matching from question
-        question_words = item["question"].lower().split()
-        if any(word in user_text for word in question_words if len(word) > 4):
+        if keyword_match or question_match:
             await update.message.reply_text(item["answer"])
             return
 
     await update.message.reply_text(
-        "That issue is not yet in the repository."
+        "That issue is not yet in my repository. It will be addressed."
     )
 
 # Add handler AFTER defining function
