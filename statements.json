@@ -1,0 +1,130 @@
+[
+  {
+    "id": "PWR_001",
+    "topic": "Elections & Power",
+    "question": "Can HH be removed from power without PF support?",
+    "answer": "No. Full stop. Anyone claiming otherwise is lying to themselves or the public. You cannot remove a sitting president using NGOs, social media noise, urban intellectual outrage, or boutique political parties. Elections are won by numbers, structures, and ground mobilization. PF’s support base is indispensable.",
+    "date": "2024-11-10",
+    "tags": ["pf", "hh", "elections", "power", "opposition"]
+  },
+  {
+    "id": "OPP_001",
+    "topic": "Opposition Strategy",
+    "question": "Why is the opposition failing to produce a real challenger?",
+    "answer": "The opposition is fragmented, infiltrated, and strategically unserious. It lacks unified leadership, discipline, and a national mobilization machine. Moral outrage has replaced organization, and rhetoric has replaced arithmetic.",
+    "date": "2024-11-12",
+    "tags": ["opposition", "strategy", "failure"]
+  },
+  {
+    "id": "PF_001",
+    "topic": "Patriotic Front",
+    "question": "Why is PF central to any power transition in Zambia?",
+    "answer": "PF remains the only opposition formation with residual national structures, electoral memory, and a loyal mass base across the Copperbelt, Lusaka, Northern, Luapula, and parts of Eastern Province. You can weaken PF, but you cannot bypass it.",
+    "date": "2024-11-15",
+    "tags": ["pf", "structures", "copperbelt", "votes"]
+  },
+  {
+    "id": "TON_001",
+    "topic": "Tonse Alliance",
+    "question": "What is the core weakness of the Tonse Alliance?",
+    "answer": "Tonse is plagued by indecision, factional leadership, and the false belief that symbolism substitutes for electoral machinery. Without a single command structure and enforced discipline, Tonse remains performative, not competitive.",
+    "date": "2024-11-18",
+    "tags": ["tonse", "alliance", "leadership"]
+  },
+  {
+    "id": "NGO_001",
+    "topic": "Civil Society & NGOs",
+    "question": "Can NGOs or civil society remove a government?",
+    "answer": "No. NGOs amplify narratives; they do not deliver votes. Governments are removed through elections, not workshops, donor statements, or press releases. Political power is seized on the ground, not online.",
+    "date": "2024-11-20",
+    "tags": ["ngos", "civil society", "elections"]
+  },
+  {
+    "id": "ELEC_001",
+    "topic": "Electoral Reality",
+    "question": "What actually wins elections in Zambia?",
+    "answer": "Numbers, structures, and turnout. Not hashtags. Not press conferences. Not international sympathy. Political victory is arithmetic backed by organization.",
+    "date": "2024-11-22",
+    "tags": ["elections", "numbers", "mobilization"]
+  },
+  {
+    "id": "CB_001",
+    "topic": "Copperbelt",
+    "question": "Why is the Copperbelt electorally decisive?",
+    "answer": "The Copperbelt is Zambia’s industrial and labour nerve centre. Any serious national victory must pass through it. Ignore it and you lose, regardless of elite approval elsewhere.",
+    "date": "2024-11-25",
+    "tags": ["copperbelt", "votes", "pf"]
+  },
+  {
+    "id": "LEAD_001",
+    "topic": "Leadership",
+    "question": "What kind of leadership does Zambia’s opposition need?",
+    "answer": "Leadership with institutional memory, strategic patience, and the courage to tell supporters uncomfortable truths. Charisma without structure is entertainment, not leadership.",
+    "date": "2024-11-28",
+    "tags": ["leadership", "opposition", "discipline"]
+  },
+  {
+    "id": "SOV_001",
+    "topic": "Sovereignty",
+    "question": "What is your position on foreign influence in Zambian politics?",
+    "answer": "Zambia’s political future must be decided by Zambians through their institutions. External actors may observe or advise, but they do not confer legitimacy or determine leadership.",
+    "date": "2024-12-01",
+    "tags": ["sovereignty", "foreign influence", "zambia"]
+  },
+  {
+    "id": "PF_002",
+    "topic": "Patriotic Front",
+    "question": "Why did PF lose the Kasama by-election?",
+    "answer": "PF did not lose Kasama due to ideology or voter defection. It lost because of internal confusion, elite self-interest, and absence of purpose-driven leadership. Voters did not migrate; they disengaged.",
+    "date": "2025-01-15",
+    "tags": ["pf", "kasama", "by-election"]
+  },
+  {
+    "id": "PF_003",
+    "topic": "Opposition Strategy",
+    "question": "Why is confusion fatal in opposition politics?",
+    "answer": "Confusion drives voter withdrawal, not debate. Parallel leadership and competing instructions destroy belief. Structure cannot survive without clarity.",
+    "date": "2025-01-18",
+    "tags": ["opposition", "confusion", "leadership"]
+  },
+  {
+    "id": "POL_001",
+    "topic": "Youth & Mining Policy",
+    "question": "Why is deploying the army to artisanal mining a policy failure?",
+    "answer": "You do not send soldiers to solve unemployment. Army deployment punishes poverty, traumatizes communities, and clears space for politically connected actors. It replaces policy with force.",
+    "date": "2025-01-22",
+    "tags": ["mining", "youth", "policy", "army"]
+  },
+  {
+    "id": "POL_002",
+    "topic": "Youth & Mining Policy",
+    "question": "What is the alternative to army-led mining enforcement?",
+    "answer": "Withdraw the army from routine mining. Create youth-only artisanal zones, decentralize licensing, ban political proxies, and invest in skills, safety, and market access. Build youth into the economy.",
+    "date": "2025-01-22",
+    "tags": ["mining", "youth", "economy", "solutions"]
+  },
+  {
+    "id": "ELEC_002",
+    "topic": "Elections & Strategy",
+    "question": "Why is the voters’ register decisive for 2026?",
+    "answer": "The voters’ register reshapes the election before voting begins. Abnormal provincial growth patterns shift political weight and punish urban-only strategies. Ignore this and you lose early.",
+    "date": "2025-01-25",
+    "tags": ["elections", "ecz", "2026"]
+  },
+  {
+    "id": "ELEC_003",
+    "topic": "Elections & Strategy",
+    "question": "What determines a PF-led coalition victory in 2026?",
+    "answer": "Three variables: PF unity above 90%, coalition retention above 90%, and HH defections exceeding 15%. Without unity, PF has no path to 50%.",
+    "date": "2025-01-28",
+    "tags": ["pf", "coalition", "2026"]
+  },
+  {
+    "id": "STATE_001",
+    "topic": "Leadership & Statecraft",
+    "question": "Why does the burial of a former Head of State matter politically?",
+    "answer": "How a nation treats its dead reflects its moral authority. Delayed or conditional burial signals unresolved power struggles and selective dignity. Leadership is judged by closure as much as control.",
+    "date": "2025-02-01",
+    "tags": ["statecraft", "leadership", "dignity"]
+  }
+]
