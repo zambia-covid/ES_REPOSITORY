@@ -70,8 +70,16 @@ async def shutdown():
 async def root():
     return {"status": "Bot is running"}
 
-@app.post(f"/{BOT_TOKEN}")
-async def telegram_webhook(request: Request):
+from urllib.parse import unquote
+
+@app.post("/{full_path:path}")
+async def telegram_webhook(full_path: str, request: Request):
+    # Decode URL
+    path_token = unquote(full_path)
+
+    if path_token != BOT_TOKEN:
+        return {"error": "Invalid webhook path"}
+
     try:
         data = await request.json()
         update = Update.de_json(data, application.bot)
