@@ -1,76 +1,48 @@
-import logging
 from fastapi import FastAPI, Request
-from telegram import Update, Bot
-from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, filters, ContextTypes
+from telegram import Update
+from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, ContextTypes, filters
+import logging
+import os
 
-# ==========================
-# CONFIG
-# ==========================
-BOT_TOKEN = "YOUR_BOT_TOKEN_HERE"  # replace with your bot token
-PORT = 8000  # default FastAPI port, Render overrides with $PORT
-
-# ==========================
-# LOGGING
-# ==========================
-logging.basicConfig(
-    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-    level=logging.INFO
-)
+logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# ==========================
-# TELEGRAM BOT SETUP
-# ==========================
+BOT_TOKEN = os.getenv("BOT_TOKEN")
+
+app = FastAPI()
 application = ApplicationBuilder().token(BOT_TOKEN).build()
 
-# Command handler
+# --- Handlers ---
+
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text("Hello! I am live and ready to answer your questions.")
+    await update.message.reply_text("Bot is live and responding.")
 
-# Text handler
-async def reply_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_text = update.message.text
-    logger.info(f"Incoming message from {update.effective_user.id}: {user_text}")
+    await update.message.reply_text(f"You asked: {user_text}")
 
-    # Simple logic for demo purposes
-    if "hello" in user_text.lower():
-        reply = "Hi there! How can I help you today?"
-    else:
-        reply = f"You said: {user_text}"
-
-    await update.message.reply_text(reply)
-    logger.info(f"Sent reply to {update.effective_user.id}: {reply}")
-
-# Add handlers
 application.add_handler(CommandHandler("start", start))
-application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, reply_handler))
+application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
 
-# ==========================
-# FASTAPI SETUP
-# ==========================
-app = FastAPI()
+# --- Startup & Shutdown ---
 
-@app.get("/")
-async def root():
-    return {"message": "Bot is live!"}
+@app.on_event("startup")
+async def startup():
+    await application.initialize()
+
+@app.on_event("shutdown")
+async def shutdown():
+    await application.shutdown()
+
+# --- Webhook ---
 
 @app.post("/{full_path:path}")
 async def telegram_webhook(full_path: str, request: Request):
     if full_path != BOT_TOKEN:
         return {"error": "Invalid webhook path"}
 
-    try:
-        data = await request.json()
-        update = Update.de_json(data, application.bot)
-        await application.process_update(update)
-        return {"ok": True}
-    except Exception as e:
-        logger.exception("Error processing update")
-        return {"ok": False, "error": str(e)}
+    data = await request.json()
+    update = Update.de_json(data, application.bot)
+    await application.process_update(update)
 
-# ==========================
-# START BOT (OPTIONAL LOCAL TEST)
-# ==========================
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run("bot:app", host="0.0.0.0", port=PORT, log_level="info")
+    return {"ok": True}
