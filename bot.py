@@ -28,22 +28,22 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text("Hello! I am live and ready to answer your questions.")
 
 # Text handler
-async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    user_text = update.message.text.lower()
+async def reply_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    user_text = update.message.text
+    logger.info(f"Incoming message from {update.effective_user.id}: {user_text}")
 
-    for item in STATEMENTS:
-        keywords = [k.lower() for k in item["keywords"]]
-        if any(keyword in user_text for keyword in keywords):
-            await update.message.reply_text(item["response"])
-            return
+    # Simple logic for demo purposes
+    if "hello" in user_text.lower():
+        reply = "Hi there! How can I help you today?"
+    else:
+        reply = f"You said: {user_text}"
 
-    await update.message.reply_text(
-        "No direct statement found on that issue. Please refine your question."
-    )
+    await update.message.reply_text(reply)
+    logger.info(f"Sent reply to {update.effective_user.id}: {reply}")
 
 # Add handlers
 application.add_handler(CommandHandler("start", start))
-application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, reply_handler))
+application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
 
 # ==========================
 # FASTAPI SETUP
