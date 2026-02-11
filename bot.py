@@ -1,61 +1,90 @@
+import json
 import logging
+import os
+
 from fastapi import FastAPI, Request
-from telegram import Update, Bot
-from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, filters, ContextTypes
-
-# ==========================
-# CONFIG
-# ==========================
-BOT_TOKEN = "YOUR_BOT_TOKEN_HERE"  # replace with your bot token
-PORT = 8000  # default FastAPI port, Render overrides with $PORT
-
-# ==========================
-# LOGGING
-# ==========================
-logging.basicConfig(
-    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-    level=logging.INFO
+from telegram import Update
+from telegram.ext import (
+    ApplicationBuilder,
+    MessageHandler,
+    ContextTypes,
+    filters,
 )
+
+# -----------------------------
+# BASIC CONFIG
+# -----------------------------
+
+logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# ==========================
-# TELEGRAM BOT SETUP
-# ==========================
+BOT_TOKEN = os.getenv("BOT_TOKEN")  # Set this in Render Environment
+
+# -----------------------------
+# LOAD STATEMENTS
+# -----------------------------
+
+with open("statements.json", "r", encoding="utf-8") as f:
+    STATEMENTS = json.load(f)
+
+# -----------------------------
+# CREATE TELEGRAM APPLICATION
+# -----------------------------
+
 application = ApplicationBuilder().token(BOT_TOKEN).build()
 
-# Command handler
-async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text("Hello! I am live and ready to answer your questions.")
+# -----------------------------
+# MESSAGE HANDLER
+# -----------------------------
 
-# Text handler
-async def reply_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    user_text = update.message.text
-    logger.info(f"Incoming message from {update.effective_user.id}: {user_text}")
+async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if not update.message or not update.message.text:
+        return
 
-    # Simple logic for demo purposes
-    if "hello" in user_text.lower():
-        reply = "Hi there! How can I help you today?"
-    else:
-        reply = f"You said: {user_text}"
+    user_text = update.message.text.lower()
 
-    await update.message.reply_text(reply)
-    logger.info(f"Sent reply to {update.effective_user.id}: {reply}")
+    for item in STATEMENTS:
+        for keyword in item["keywords"]:
+            if keyword.lower() in user_text:
+                await update.message.reply_text(item["response"])
+                return
 
-# Add handlers
-application.add_handler(CommandHandler("start", start))
-application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
+    await update.message.reply_text(
+        "That issue is not yet in my repository. It will be addressed."
+    )
 
-# ==========================
-# FASTAPI SETUP
-# ==========================
+# Add handler AFTER defining function
+application.add_handler(
+    MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message)
+)
+
+# -----------------------------
+# FASTAPI APP
+# -----------------------------
+
 app = FastAPI()
+
+
+@app.on_event("startup")
+async def startup():
+    await application.initialize()
+    await application.start()
+
+
+@app.on_event("shutdown")
+async def shutdown():
+    await application.stop()
+    await application.shutdown()
+
 
 @app.get("/")
 async def root():
-    return {"message": "Bot is live!"}
+    return {"status": "Bot is running"}
+
 
 @app.post("/{full_path:path}")
 async def telegram_webhook(full_path: str, request: Request):
+    # Accept both encoded and non-encoded token
     if full_path != BOT_TOKEN:
         return {"error": "Invalid webhook path"}
 
@@ -67,10 +96,3 @@ async def telegram_webhook(full_path: str, request: Request):
     except Exception as e:
         logger.exception("Error processing update")
         return {"ok": False, "error": str(e)}
-
-# ==========================
-# START BOT (OPTIONAL LOCAL TEST)
-# ==========================
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run("bot:app", host="0.0.0.0", port=PORT, log_level="info")
