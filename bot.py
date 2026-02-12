@@ -36,15 +36,21 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     text = update.message.text.lower()
 
     for item in repository:
-        # match any tag
-        tags = item.get("tags", [])
+        question = item.get("question", "").lower()
         answer = item.get("answer", "Sorry, I don’t have an answer yet.")
+        tags = [tag.lower() for tag in item.get("tags", [])]
 
-        if any(tag.lower() in text for tag in tags):
+        # Match if user text contains the question substring OR any tag matches
+        if question in text or any(tag in text for tag in tags):
+            print("Match found:", question, "| Tags:", tags)  # debug
             await update.message.reply_text(answer)
             return
-        
-    await update.message.reply_text("That issue is not yet in my repository. It will be addressed.")
+
+    # Fallback if no match found
+    print("No match found")  # debug
+    await update.message.reply_text(
+        "That issue is not yet in my repository. It will be addressed."
+    )
 
 # Add handler
 application.add_handler(MessageHandler(filters.TEXT, handle_message))
