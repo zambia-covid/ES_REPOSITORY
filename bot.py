@@ -2,6 +2,8 @@ import json
 import logging
 import os
 
+
+
 from fastapi import FastAPI, Request
 from telegram import Update
 from telegram.ext import ApplicationBuilder, MessageHandler, ContextTypes, filters
@@ -20,8 +22,8 @@ BOT_TOKEN = os.getenv("BOT_TOKEN")  # Ensure this is set in Render environment
 with open("statements.json", "r", encoding="utf-8") as f:
     repository = json.load(f)
 
-    print("Repository loaded:", repository)
-
+print("Repository loaded:", repository)
+  
 # -----------------------------
 # TELEGRAM APPLICATION
 # -----------------------------
