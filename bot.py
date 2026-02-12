@@ -28,7 +28,20 @@ application = ApplicationBuilder().token(BOT_TOKEN).build()
 # -----------------------------
 # MESSAGE HANDLER
 # -----------------------------
+repository = [
+    {
+        "keywords": ["hello", "hi"],
+        "response": "Hello there!"
+    },
+    {
+        "keywords": ["help"],
+        "response": "How can I assist you?"
+    }
+]
+
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
+
+    text = update.message.text.lower()
 
     for item in repository:
         if any(keyword in text for keyword in item["keywords"]):
@@ -36,7 +49,6 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
             return
         
     await update.message.reply_text("That issue is not yet in my repository. It will be addressed.")
-
 # Add handler
 application.add_handler(MessageHandler(filters.TEXT, handle_message))
 
