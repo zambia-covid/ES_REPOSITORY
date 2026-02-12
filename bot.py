@@ -34,12 +34,7 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         if any(keyword in text for keyword in item["keywords"]):
             await update.message.reply_text(item["response"])
             return
-
-        if any(k in user_text for k in keywords) or (question and question in user_text):
-            await update.message.reply_text(item.get("answer", ""))
-            logger.info(f"Matched: {item.get('question')}")
-            return
-
+        
     await update.message.reply_text("That issue is not yet in my repository. It will be addressed.")
 
 # Add handler
