@@ -31,24 +31,25 @@ application = ApplicationBuilder().token(BOT_TOKEN).build()
 # MESSAGE HANDLER
 # -----------------------------
 
-def score_match(user_text, question_text):
-    user_words = set(user_text.split())
-    question_words = set(question_text.split())
-    return len(user_words & question_words)
+async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
-best_match = None
-best_score = 0
+    text = update.message.text.lower()
 
-for item in data:
-    score = score_match(text, item.get("question", "").lower())
-    if score > best_score:
-        best_score = score
-        best_match = item
+    for item in repository:
+        question = item.get("question", "").lower()
+        answer = item.get("answer", "Sorry, I don’t have an answer yet.")
+        tags = [tag.lower() for tag in item.get("tags", [])]
 
-if best_score > 2:
-    await update.message.reply_text(best_match["answer"])
-else:
-    await update.message.reply_text("No matching doctrine found.")
+        # Match if user text contains the question substring OR any tag matches
+        if question in text or any(tag in text for tag in tags):
+            print("Match found:", question, "| Tags:", tags)  # debug
+            await update.message.reply_text(answer)
+            return
+
+    # Fallback if no match found
+    print("No match found")  # debug
+    await update.message.reply_text(
+        "That issue is not yet in my repository. It will be addressed."
     )
 
 # Add handler
