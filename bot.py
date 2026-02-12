@@ -30,15 +30,10 @@ application = ApplicationBuilder().token(BOT_TOKEN).build()
 # -----------------------------
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
-    print("MESSAGE RECEIVED:", update.message.text)
-    await update.message.reply_text("Received.")
-
-    user_text = update.message.text.lower()
-    logger.info(f"Received: {user_text}")
-
-    for item in STATEMENTS:
-        keywords = [k.lower() for k in item.get("keywords", [])]
-        question = item.get("question", "").lower()
+    for item in repository:
+        if any(keyword in text for keyword in item["keywords"]):
+            await update.message.reply_text(item["response"])
+            return
 
         if any(k in user_text for k in keywords) or (question and question in user_text):
             await update.message.reply_text(item.get("answer", ""))
