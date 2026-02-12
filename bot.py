@@ -37,14 +37,17 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     for item in repository:
         question = item.get("question", "").lower()
-        answer = item.get("answer", "Sorry, I don’t have an answer yet.")
-        tags = [tag.lower() for tag in item.get("tags", [])]
+    tags = [tag.lower() for tag in item.get("tags", [])]
 
-        # Match if user text contains the question substring OR any tag matches
-        if question in text or any(tag in text for tag in tags):
-            print("Match found:", question, "| Tags:", tags)  # debug
-            await update.message.reply_text(answer)
-            return
+    # Match full or partial question text
+    if question in text or text in question:
+        await update.message.reply_text(item["answer"])
+        return
+
+    # Match any tag
+    if any(tag in text for tag in tags):
+        await update.message.reply_text(item["answer"])
+        return
 
     # Fallback if no match found
     print("No match found")  # debug
