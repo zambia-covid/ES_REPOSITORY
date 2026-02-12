@@ -36,8 +36,11 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     text = update.message.text.lower()
 
     for item in repository:
-        if any(keyword in text for keyword in item["keywords"]):
-            await update.message.reply_text(item["response"])
+        question = item.get("question", "").lower()
+        response = item.get("response", "Sorry, I don’t have an answer yet.")
+
+        if question in text:  # simple substring match
+            await update.message.reply_text(response)
             return
         
     await update.message.reply_text("That issue is not yet in my repository. It will be addressed.")
