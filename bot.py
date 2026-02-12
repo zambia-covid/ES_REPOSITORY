@@ -20,6 +20,8 @@ BOT_TOKEN = os.getenv("BOT_TOKEN")  # Ensure this is set in Render environment
 with open("statements.json", "r", encoding="utf-8") as f:
     repository = json.load(f)
 
+    print("Repository loaded:", repository)
+
 # -----------------------------
 # TELEGRAM APPLICATION
 # -----------------------------
@@ -49,6 +51,7 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
             return
         
     await update.message.reply_text("That issue is not yet in my repository. It will be addressed.")
+
 # Add handler
 application.add_handler(MessageHandler(filters.TEXT, handle_message))
 
