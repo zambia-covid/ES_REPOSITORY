@@ -18,7 +18,7 @@ BOT_TOKEN = os.getenv("BOT_TOKEN")  # Ensure this is set in Render environment
 # LOAD STATEMENTS
 # -----------------------------
 with open("statements.json", "r", encoding="utf-8") as f:
-    STATEMENTS = json.load(f)
+    repository = json.load(f)
 
 # -----------------------------
 # TELEGRAM APPLICATION
