@@ -29,8 +29,9 @@ application = ApplicationBuilder().token(BOT_TOKEN).build()
 # MESSAGE HANDLER
 # -----------------------------
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    if not update.message or not update.message.text:
-        return
+
+    print("MESSAGE RECEIVED:", update.message.text)
+    await update.message.reply_text("Received.")
 
     user_text = update.message.text.lower()
     logger.info(f"Received: {user_text}")
@@ -47,7 +48,7 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text("That issue is not yet in my repository. It will be addressed.")
 
 # Add handler
-application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
+application.add_handler(MessageHandler(filters.TEXT, handle_message))
 
 # -----------------------------
 # FASTAPI APP
